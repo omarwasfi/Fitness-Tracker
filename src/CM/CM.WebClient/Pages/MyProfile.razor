@@ -9,7 +9,7 @@
 
         @if (!editMode)
         {
-            <MudImage Src="@person.ProfilePicture.Base64" Width="200" Height="200" Alt="Swedish Farm House" Elevation="25" Class="rounded-lg ma-4" />
+            <MudImage Src="@person.ProfilePicture.Base64" Width="200" Height="200" Alt="Swedish Farm House" Elevation="25" Class="rounded-lg ma-4"/>
             <h3>@person.UserName</h3>
 
             <p>@person.FirstName</p>
@@ -20,36 +20,36 @@
         }
         else
         {
-<MudGrid>
-    <MudItem xs="12">
-        <MudImage Src="@person.ProfilePicture.Base64" Width="200" Height="200" Alt="Swedish Farm House" Elevation="25" Class="rounded-lg ma-4" />
-    </MudItem>
-    <MudItem xs="12">
-        <InputFile id="fileInput" OnChange="UploadFiles" hidden multiple accept=".jpg, .jpeg, .png" />
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudImage Src="@person.ProfilePicture.Base64" Width="200" Height="200" Alt="Swedish Farm House" Elevation="25" Class="rounded-lg ma-4"/>
+                </MudItem>
+                <MudItem xs="12">
+                    <InputFile id="fileInput" OnChange="UploadFiles" hidden multiple accept=".jpg, .jpeg, .png"/>
 
-        <MudFab HtmlTag="label"
-                Color="Color.Secondary"
-                Icon="@Icons.Filled.Image"
-                Label="Load new profile picture"
-                for="fileInput" />
-    </MudItem>
-    <MudItem xs="12">
-        <MudButton OnClick="switchEditModel" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info">Save</MudButton>
-    </MudItem>
+                    <MudFab HtmlTag="label"
+                            Color="Color.Secondary"
+                            Icon="@Icons.Filled.Image"
+                            Label="Load new profile picture"
+                            for="fileInput"/>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudButton OnClick="switchEditModel" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Color="Color.Info">Save</MudButton>
+                </MudItem>
 
-</MudGrid>
-
-                
-
-
-                }
-
-                }
+            </MudGrid>
 
 
 
 
-        </MudContainer>
+        }
+
+    }
+
+
+
+
+</MudContainer>
 
 
 @code {

@@ -23,6 +23,9 @@ namespace CM.SharedWithClient
 
         public PictureBase64DataViewModel? ProfilePicture { get; set; }
 
+        public List<RoleDataViewModel>? Roles { get; set; }
+
+
 
     }
 }

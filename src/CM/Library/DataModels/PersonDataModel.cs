@@ -12,12 +12,12 @@ namespace CM.Library.DataModels
     public class PersonDataModel : IdentityUser
     {
         public PersonDataModel()
-        {
-           
+        {          
             this.OTPs = new HashSet<OTPDataModel>();
             this.Rooms = new HashSet<RoomDataModel>();
             this.Messages = new HashSet<MessageDataModel>();
         }
+
         [Column(TypeName = "nvarchar(100)")]
         public string FirstName { get; set; }
         [Column(TypeName = "nvarchar(100)")]
@@ -33,7 +33,7 @@ namespace CM.Library.DataModels
         public virtual PictureDataModel ProfilePicture { get; set; }
         public virtual ICollection<OTPDataModel> OTPs { get; set; }
 
-
+        
 
         #region Chat
         public virtual ICollection<RoomDataModel> Rooms { get; set; }

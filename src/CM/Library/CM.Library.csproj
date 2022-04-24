@@ -31,6 +31,7 @@
     <Folder Include="Queries\MessageContent\" />
     <Folder Include="Queries\Message\" />
     <Folder Include="DataModels\BusinessModels\" />
+    <Folder Include="Queries\Roles\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,5 +53,6 @@
     <None Remove="Queries\Message\" />
     <None Remove="ChatHub\" />
     <None Remove="DataModels\BusinessModels\" />
+    <None Remove="Queries\Roles\" />
   </ItemGroup>
 </Project>
