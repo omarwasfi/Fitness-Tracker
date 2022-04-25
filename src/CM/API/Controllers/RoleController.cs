@@ -8,12 +8,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using CM.Library.Queries.Roles;
+using FluentValidation;
+using CM.Library.DataModels;
+using CM.Library.Events.Roles;
 
 namespace CM.API.Controllers
 {
 	[ApiController]
 	[Route("[controller]")]
-	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = "Administrator")]
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = "Administrator,HR")]
 	public class RoleController : ControllerBase
 	{
 		private IMediator _mediator { get; set; }
@@ -29,12 +32,156 @@ namespace CM.API.Controllers
         [Route("GetRoles")]
         public async Task<ActionResult<List<RoleDataViewModel>>> GetRoles()
         {
-            List<IdentityRole> identityRoles = await _mediator.Send(new GetAllRolesQuery());
+            try
+            {
+                List<IdentityRole> identityRoles = await _mediator.Send(new GetAllRolesQuery());
 
-            List<RoleDataViewModel> roleDataViewModels= _mapper.Map< List<RoleDataViewModel>>(identityRoles);
+                List<RoleDataViewModel> roleDataViewModels = _mapper.Map<List<RoleDataViewModel>>(identityRoles);
 
 
-            return roleDataViewModels;
+                return Ok(roleDataViewModels);
+            }
+            catch (ValidationException v)
+            {
+                return ValidationProblem(v.Message);
+            }
+            catch
+            {
+                return BadRequest("Unrecognized error");
+
+            }
+        }
+
+        [HttpPost]
+        [Route("AddCouchRole")]
+        public async Task<ActionResult<PersonDataViewModel>> AddCouchRole(string personId)
+        {
+            try
+            {
+                PersonDataModel person = await _mediator.Send(new AddCouchRoleCommand(personId, this.User));
+                PersonDataViewModel personDataViewModel = _mapper.Map<PersonDataViewModel>(person);
+
+                return personDataViewModel;
+            }
+            catch (ValidationException v)
+            {
+                return ValidationProblem(v.Message);
+            }
+            catch
+            {
+                return BadRequest("Unrecognized error");
+
+            }
+        }
+
+        [HttpDelete]
+        [Route("DeleteCouchRole")]
+        public async Task<ActionResult<PersonDataViewModel>> DeleteCouchRole(string personId)
+        {
+            try
+            {
+                PersonDataModel person = await _mediator.Send(new DeleteCouchRoleCommand(personId, this.User));
+                PersonDataViewModel personDataViewModel = _mapper.Map<PersonDataViewModel>(person);
+
+                return personDataViewModel;
+            }
+            catch (ValidationException v)
+            {
+                return ValidationProblem(v.Message);
+            }
+            catch
+            {
+                return BadRequest("Unrecognized error");
+
+            }
+        }
+
+        [HttpPost]
+        [Route("AddMemberRole")]
+        public async Task<ActionResult<PersonDataViewModel>> AddMemberRole(string personId)
+        {
+            try
+            {
+                PersonDataModel person = await _mediator.Send(new AddMemberRoleCommand(personId, this.User));
+                PersonDataViewModel personDataViewModel = _mapper.Map<PersonDataViewModel>(person);
+
+                return personDataViewModel;
+            }
+            catch (ValidationException v)
+            {
+                return ValidationProblem(v.Message);
+            }
+            catch
+            {
+                return BadRequest("Unrecognized error");
+
+            }
+        }
+
+        [HttpDelete]
+        [Route("DeleteMemberRole")]
+        public async Task<ActionResult<PersonDataViewModel>> DeleteMemberRole(string personId)
+        {
+            try
+            {
+                PersonDataModel person = await _mediator.Send(new DeleteMemberRoleCommand(personId, this.User));
+                PersonDataViewModel personDataViewModel = _mapper.Map<PersonDataViewModel>(person);
+
+                return personDataViewModel;
+            }
+            catch (ValidationException v)
+            {
+                return ValidationProblem(v.Message);
+            }
+            catch
+            {
+                return BadRequest("Unrecognized error");
+
+            }
+        }
+
+        [HttpPost]
+        [Route("AddHRRole")]
+        public async Task<ActionResult<PersonDataViewModel>> AddHRRole(string personId)
+        {
+            try
+            {
+                PersonDataModel person = await _mediator.Send(new AddHRRoleCommand(personId, this.User));
+                PersonDataViewModel personDataViewModel = _mapper.Map<PersonDataViewModel>(person);
+
+                return personDataViewModel;
+            }
+            catch (ValidationException v)
+            {
+                return ValidationProblem(v.Message);
+            }
+            catch
+            {
+                return BadRequest("Unrecognized error");
+
+            }
+        }
+
+        [HttpDelete]
+        [Route("DeleteHRRole")]
+        public async Task<ActionResult<PersonDataViewModel>> DeleteHRRole(string personId)
+        {
+            try
+            {
+                PersonDataModel person = await _mediator.Send(new DeleteHRRoleCommand(personId, this.User));
+                PersonDataViewModel personDataViewModel = _mapper.Map<PersonDataViewModel>(person);
+
+                return personDataViewModel;
+            }
+            catch (ValidationException v)
+            {
+                return ValidationProblem(v.Message);
+            }
+            catch
+            {
+                return BadRequest("Unrecognized error");
+
+            }
         }
 
     }
