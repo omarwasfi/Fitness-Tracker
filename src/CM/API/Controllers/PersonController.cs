@@ -101,17 +101,24 @@ namespace CM.API.Controllers
 
         [HttpPut]
         [Route("UpdateProfile")]
-        public async Task<ActionResult> UpdateProfile(PersonUpdateProfileRequestViewModel personUpdateProfileRequestViewModel)
+        public async Task<ActionResult<PersonDataViewModel>> UpdateProfile(PersonUpdateProfileRequestViewModel personUpdateProfileRequestViewModel)
         {
             
             try
             {
-                await _mediator.Send(new UpdateProfileCommand(
-                                this.User,personUpdateProfileRequestViewModel.FirstName,
+                PersonDataModel person =  await _mediator.Send(new UpdateProfileCommand(
+                                this.User,
+                                personUpdateProfileRequestViewModel.FirstName,
                                 personUpdateProfileRequestViewModel.LastName,
-                                personUpdateProfileRequestViewModel.Gender));
+                                personUpdateProfileRequestViewModel.Gender,
+                                personUpdateProfileRequestViewModel.PhoneNumber));
 
-                return Ok();
+                PersonDataViewModel personDataViewModel = new PersonDataViewModel();
+
+                personDataViewModel = _mapper.Map<PersonDataViewModel>(person);
+
+
+                return Ok(personDataViewModel);
             }
             catch (ValidationException v)
             {

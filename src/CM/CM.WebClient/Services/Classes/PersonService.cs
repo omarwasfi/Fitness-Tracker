@@ -1,5 +1,6 @@
 ﻿using System;
 using CM.SharedWithClient;
+using CM.SharedWithClient.RequestViewModels;
 using CM.WebClient.Services.Interfaces;
 using Microsoft.AspNetCore.Components.Forms;
 
@@ -13,6 +14,11 @@ namespace CM.WebClient.Services.Classes
 		{
             this._httpService = httpService;
 		}
+
+        public async Task<PersonDataViewModel> UpdateProfile(PersonUpdateProfileRequestViewModel personUpdateProfileRequestViewModel)
+        {
+            return await _httpService.Put<PersonDataViewModel>("Person/UpdateProfile", personUpdateProfileRequestViewModel);
+        }
 
         public async Task<List<PersonDataViewModel>> GetContacts()
         {

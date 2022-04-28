@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace CM.Library.Events.Person
 {
-    public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand>
+    public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand,PersonDataModel>
     {
         private CurrentStateDBContext _currentStateDBContext;
         private readonly EventsDBContext _eventsDBContext;
@@ -24,7 +24,7 @@ namespace CM.Library.Events.Person
             this._mediator = mediator;
         }
 
-        public async Task<Unit> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
+        public async Task<PersonDataModel> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
         {
 
             EventDataModel logoutPersonEvent = new EventDataModel();
@@ -51,11 +51,14 @@ namespace CM.Library.Events.Person
             person.FirstName = request.FirstName;
             person.LastName = request.LastName;
             person.Gender = request.Gender;
+            person.PhoneNumber = request.PhoneNumber;
 
             await _currentStateDBContext.SaveChangesAsync();
 
-            return Unit.Value;
+            return person;
         }
+
+
 
         private class UpdateProfileCommandEventModel
         {
