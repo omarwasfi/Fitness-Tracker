@@ -11,12 +11,13 @@ using CM.Library.Queries.Roles;
 using FluentValidation;
 using CM.Library.DataModels;
 using CM.Library.Events.Roles;
+using CM.SharedWithClient.RequestViewModels;
 
 namespace CM.API.Controllers
 {
 	[ApiController]
 	[Route("[controller]")]
-	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = "Administrator,HR")]
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme,Roles = "Administrator,HR,Couch")]
 	public class RoleController : ControllerBase
 	{
 		private IMediator _mediator { get; set; }
@@ -54,11 +55,11 @@ namespace CM.API.Controllers
 
         [HttpPost]
         [Route("AddCouchRole")]
-        public async Task<ActionResult<PersonDataViewModel>> AddCouchRole(string personId)
+        public async Task<ActionResult<PersonDataViewModel>> AddCouchRole(AddRoleToPersonRequestDataViewModel addRoleToPersonRequestDataViewModel)
         {
             try
             {
-                PersonDataModel person = await _mediator.Send(new AddCouchRoleCommand(personId, this.User));
+                PersonDataModel person = await _mediator.Send(new AddCouchRoleCommand(addRoleToPersonRequestDataViewModel.PersonId, this.User));
                 PersonDataViewModel personDataViewModel = _mapper.Map<PersonDataViewModel>(person);
 
                 return personDataViewModel;
@@ -98,11 +99,11 @@ namespace CM.API.Controllers
 
         [HttpPost]
         [Route("AddMemberRole")]
-        public async Task<ActionResult<PersonDataViewModel>> AddMemberRole(string personId)
+        public async Task<ActionResult<PersonDataViewModel>> AddMemberRole(AddRoleToPersonRequestDataViewModel addRoleToPersonRequestDataViewModel)
         {
             try
             {
-                PersonDataModel person = await _mediator.Send(new AddMemberRoleCommand(personId, this.User));
+                PersonDataModel person = await _mediator.Send(new AddMemberRoleCommand(addRoleToPersonRequestDataViewModel.PersonId, this.User));
                 PersonDataViewModel personDataViewModel = _mapper.Map<PersonDataViewModel>(person);
 
                 return personDataViewModel;
@@ -142,11 +143,11 @@ namespace CM.API.Controllers
 
         [HttpPost]
         [Route("AddHRRole")]
-        public async Task<ActionResult<PersonDataViewModel>> AddHRRole(string personId)
+        public async Task<ActionResult<PersonDataViewModel>> AddHRRole(AddRoleToPersonRequestDataViewModel addRoleToPersonRequestDataViewModel)
         {
             try
             {
-                PersonDataModel person = await _mediator.Send(new AddHRRoleCommand(personId, this.User));
+                PersonDataModel person = await _mediator.Send(new AddHRRoleCommand(addRoleToPersonRequestDataViewModel.PersonId, this.User));
                 PersonDataViewModel personDataViewModel = _mapper.Map<PersonDataViewModel>(person);
 
                 return personDataViewModel;

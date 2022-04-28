@@ -1,0 +1,155 @@
+@page "/ManageRoles"
+@inject IPersonService PersonService
+@inject IRoleService RoleService
+@inject NavigationManager NavigationManager
+
+
+<div class="d-flex flex-grow-1 flex-row">
+    
+    <MudPaper Elevation="25" Class="pa-4 ml-6" Width="95%">
+        <MudToolBar Dense="true">
+            <MudText Typo="Typo.h6" Inline="true" Class="mr-2">All</MudText>
+            <MudText Typo="Typo.h6">people</MudText>
+        </MudToolBar>
+        <div class="d-flex flex-column px-4" style="max-height:90vh;min-height:70vh; overflow:scroll;">
+            <MudList >
+                @foreach (var person in People)
+                {
+                    <MudListItem  Class="pa-0 px-2;" Style=" border-radius: 5px; border-bottom: 0.5px solid gray;" >
+                        <div class="d-flex flex-row mt-n1 mb-n1">
+                            <div class="mr-4">
+                                <MudBadge Class="my-2">
+                                    
+                                    <MudAvatar Color="Color.Dark" Image=@person.ProfilePicture.Base64 Style="height:50px; width:50px;"/>
+                                    
+                                </MudBadge>
+                            </div>
+                          
+                            <div>
+                                <MudGrid >
+                                    <MudItem>
+                                        <MudText Typo="Typo.body1" Class="mt-3 mb-n2">@person.UserName</MudText>
+                                        <MudText Typo="Typo.h6" Style="font-size: xx-small!important; margin-top: 5px;">ID: @person.Id</MudText>
+                                        @if (person.Roles.Count > 0)
+                                        {
+                                            <MudText Typo="Typo.caption" Style="font-size: small; color: #bb2d3b">Roles: </MudText>
+                                            @foreach (RoleDataViewModel role in person.Roles)
+                                            {
+                                                                   
+                                                <MudText Typo="Typo.caption" Style="font-size: xx-small!important; color: #0a53be; margin-left: 10px;">@role.Id</MudText>
+                                            }
+                                        }
+                                    </MudItem>
+                                    <MudItem Style="justify-content: center; margin-top: 1vh; margin-bottom: 3vh;">
+                                        
+                                        <MudGrid Spacing="2">
+                                            @if (autherizedPerson.Roles.Find(x => x.Name == "Couch") != null
+                                                 || autherizedPerson.Roles.Find(x => x.Name == "HR") != null
+                                                 || autherizedPerson.Roles.Find(x => x.Name == "Administrator") != null)
+                                            {
+                                                <MudItem>
+                                                    @if (person.Roles.Find(x => x.Name == "Member") == null)
+                                                    {
+                                                        <MudButton OnClick="@(() => PromoteAsMember(person.Id))" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small">Promote as member</MudButton>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <MudButton OnClick="@(() => RemoveAsMember(person.Id))"   Variant="Variant.Outlined" Color="Color.Secondary" Size="Size.Small">Remove as member</MudButton>
+                                                    }
+                                                </MudItem>
+                                            }
+                                            @if ( autherizedPerson.Roles.Find(x => x.Name == "HR") != null
+                                                  || autherizedPerson.Roles.Find(x => x.Name == "Administrator") != null)
+                                            {
+                                                <MudItem>
+                                                    @if (person.Roles.Find(x => x.Name == "Couch") == null)
+                                                    {
+                                                        <MudButton OnClick="@(() => PromoteAsCouch(person.Id))"  Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small">Promote as Couch</MudButton>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <MudButton OnClick="@(() => RemoveAsCouch(person.Id))"  Variant="Variant.Outlined" Color="Color.Secondary" Size="Size.Small">Remove as Couch</MudButton>
+                                                    }
+                                                </MudItem>
+                                            }
+                                            @if (
+                                                autherizedPerson.Roles.Find(x => x.Name == "Administrator") != null)
+                                            {
+                                                <MudItem>
+                                                    @if (person.Roles.Find(x => x.Name == "HR") == null)
+                                                    {
+                                                        <MudButton OnClick="@(() => PromoteAsHR(person.Id))"  Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Small">Promote as HR</MudButton>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <MudButton OnClick="@(() => RemoveAsHR(person.Id))"  Variant="Variant.Outlined" Color="Color.Secondary" Size="Size.Small">Remove as HR</MudButton>
+                                                    }
+                                                </MudItem>
+
+                                            }
+
+                                        </MudGrid>
+
+                                    </MudItem>
+                                </MudGrid>
+                            </div>
+                        </div>
+                    </MudListItem>
+                }
+            </MudList>
+        </div>
+    </MudPaper>
+</div>
+
+@code {
+    private List<PersonDataViewModel> People { get; set; } = new List<PersonDataViewModel>();
+
+    private PersonDataViewModel autherizedPerson { get; set; } = new PersonDataViewModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        People = await PersonService.GetContacts();
+        this.autherizedPerson = await PersonService.GetTheAuthorizedPerson();
+    }
+
+
+    private async Task PromoteAsMember(string personId)
+    {
+        int personIndex = People.IndexOf(People.FirstOrDefault(x => x.Id == personId));
+        People[personIndex] = await RoleService.PromoteAsMember(personId);
+        this.StateHasChanged();
+    }
+    private async Task RemoveAsMember(string personId)
+    {
+        int personIndex = People.IndexOf(People.FirstOrDefault(x => x.Id == personId));
+        People[personIndex] = await RoleService.RemoveAsMember(personId);
+        this.StateHasChanged();
+    }
+    private async Task PromoteAsCouch(string personId)
+    {
+        int personIndex = People.IndexOf(People.FirstOrDefault(x => x.Id == personId));
+        People[personIndex] = await RoleService.PromoteAsCouch(personId);
+        this.StateHasChanged();
+    }
+    private async Task RemoveAsCouch(string personId)
+    {
+        int personIndex = People.IndexOf(People.FirstOrDefault(x => x.Id == personId));
+        People[personIndex] = await RoleService.RemoveAsCouch(personId);
+        this.StateHasChanged();
+    }
+    private async Task PromoteAsHR(string personId)
+    {
+        int personIndex = People.IndexOf(People.FirstOrDefault(x => x.Id == personId));
+        People[personIndex] = await RoleService.PromoteAsHR(personId);
+        this.StateHasChanged();
+    }
+    private async Task RemoveAsHR(string personId)
+    {
+        int personIndex = People.IndexOf(People.FirstOrDefault(x => x.Id == personId));
+        People[personIndex] = await RoleService.RemoveAsHR(personId);
+        this.StateHasChanged();
+    }
+}

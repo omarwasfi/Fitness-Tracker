@@ -11,6 +11,9 @@ namespace CM.WebClient.Services.Interfaces
 		Task Post(string uri, object value);
 		Task<T> PutBrowseFile<T>(string uri, IBrowserFile browserFile);
 
+		Task<T> Delete<T>(string uri);
+
+
 	}
 }
 

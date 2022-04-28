@@ -26,7 +26,7 @@ namespace CM.Library.Events.Roles
 
 			RuleFor(x => x).MustAsync(async (addCouchRoleCommand, cancellation) => {
 				return await IsTheAuthorizedUserIsAdminstratorOrHR(addCouchRoleCommand.ClaimsPrincipal);
-			}).WithMessage("You must be an Administrator or HR");
+			}).WithMessage("You must be an Administrator or HR Or Couch");
 
 			RuleFor(x => x).MustAsync(async (addCouchRoleCommand, cancellation) => {
 				return await IsThePersonHasMemberRole(addCouchRoleCommand.PersonId);
@@ -48,7 +48,11 @@ namespace CM.Library.Events.Roles
             {
 				return true;
             }
-            else
+			else if (roles.Find(x => x.Id == "Couch") != null)
+			{
+				return true;
+			}
+			else
             {
 				return false;
             }

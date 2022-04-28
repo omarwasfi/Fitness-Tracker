@@ -48,7 +48,11 @@ namespace CM.WebClient.Services.Classes
             request.Content = new StringContent(JsonSerializer.Serialize(value), Encoding.UTF8, "application/json");
             return await sendRequest<T>(request);
         }
-
+        public async Task<T> Delete<T>(string uri)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Delete, uri);
+            return await sendRequest<T>(request);
+        }
         public async Task Post(string uri, object value)
         {
             var request = new HttpRequestMessage(HttpMethod.Post, uri);
