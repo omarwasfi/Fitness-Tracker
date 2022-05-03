@@ -1,0 +1,106 @@
+
+<MudContainer Style="margin-top: 10px;">
+    <MudTable Items="ExerciseActions"  Filter="new Func<ExerciseActionDataViewModel,bool>(FilterFunc1)"  Breakpoint="Breakpoint.Sm">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Exercises</MudText>
+            <MudSpacer />
+            <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Index</MudTh>
+            <MudTh>Exercise name</MudTh>
+            <MudTh>Sets</MudTh>
+            <MudTh>Reps</MudTh>
+            <MudTh>Time</MudTh>
+            <MudTh>RestTime</MudTh>
+            <MudTh>Note</MudTh>
+            <MudTh>Move Down</MudTh>
+            <MudTh>Remove</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Index">@context.Index</MudTd>
+            <MudTd DataLabel="Exercise name">
+                @context.Exercise.Name
+            </MudTd>
+            <MudTd DataLabel="Sets">
+                <MudTextField @bind-Value=@context.Sets Label="Sets" Variant="Variant.Text"  />
+            </MudTd>
+            <MudTd DataLabel="Reps">
+                <MudTextField @bind-Value=@context.Reps Label="Reps" Variant="Variant.Text"  />
+            </MudTd>
+            <MudTd DataLabel="Time">
+                <MudTextField @bind-Value=@context.Time Label="Time" Variant="Variant.Text"  />
+            </MudTd>
+            <MudTd DataLabel="RestTime">
+                <MudTextField @bind-Value=@context.RestTime Label="RestTime" Variant="Variant.Text"  />
+            </MudTd>
+            <MudTd DataLabel="Note">
+                <MudTextField @bind-Value=@context.Note Label="Note" Variant="Variant.Text"  />
+            </MudTd>
+            <MudTd DataLabel="Move Down">
+                <MudIconButton OnClick="() => moveDown(context)" Icon="@Icons.Material.Outlined.MoveDown"></MudIconButton>
+            </MudTd>
+            <MudTd DataLabel="Remove">
+                <MudIconButton OnClick="() => remove(context)" Icon="@Icons.Material.Outlined.RestoreFromTrash"></MudIconButton>
+            </MudTd>
+    
+        </RowTemplate>
+    </MudTable>
+</MudContainer>
+
+@code {
+    [CascadingParameter(Name = "ExerciseActions")]
+    private List<ExerciseActionDataViewModel> ExerciseActions { get; set; }
+
+    private List<ExerciseActionDataViewModel> RemovedExerciseActions { get; set; } = new List<ExerciseActionDataViewModel>();
+    
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        ReOreder();
+    }
+
+    private void ReOreder()
+    {
+        ExerciseActions = ExerciseActions.OrderBy(x => x.Index).ToList();
+    }
+
+    private void moveDown(ExerciseActionDataViewModel exerciseActionDataViewModel)
+    {
+        try
+        {
+            ExerciseActionDataViewModel sameIndexExerciseAction = ExerciseActions.First(x => x.Index == exerciseActionDataViewModel.Index + 1);
+            sameIndexExerciseAction.Index--;
+            exerciseActionDataViewModel.Index++;
+            ReOreder();
+            StateHasChanged();
+        }
+        catch
+        {
+            
+        }
+    }
+    
+    private void remove(ExerciseActionDataViewModel exerciseActionDataViewModel)
+    {
+        RemovedExerciseActions.Add(exerciseActionDataViewModel);
+        ExerciseActions.Remove(exerciseActionDataViewModel);
+        
+    }
+    
+
+    private string searchString = "";
+
+    private bool FilterFunc1(ExerciseActionDataViewModel element) => FilterFunc(element, searchString);
+
+    private bool FilterFunc(ExerciseActionDataViewModel element, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.Index.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if ($"{element.Exercise.Name} {element.Note} ".Contains(searchString))
+            return true;
+        return false;
+    }
+}

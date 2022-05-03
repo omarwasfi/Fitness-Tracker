@@ -28,6 +28,7 @@
     <None Remove="Services\Classes\" />
     <None Remove="Services\Interfaces\" />
     <None Remove="Microsoft.AspNetCore.Mvc" />
+    <None Remove="MudBlazor" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />

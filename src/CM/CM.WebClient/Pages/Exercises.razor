@@ -1,0 +1,33 @@
+﻿@page "/Exercises"
+@using CM.WebClient.Components.Views
+
+<h3>Exercises</h3>
+
+<ExercisesView Exercises="_exerciseDataViewModels"/>
+
+
+
+@code {
+
+    List<ExerciseDataViewModel> _exerciseDataViewModels = new List<ExerciseDataViewModel>()
+    {
+        new ExerciseDataViewModel(){Id = "124" , Name = "asdfasdf" , Description = "qweasdf"},
+        new ExerciseDataViewModel(){Id = "zxcv3" , Name = "ijkp" , Description = "qweasdf"},
+        new ExerciseDataViewModel(){Id = "45" , Name = "dghj" , Description = "qweasdf"}
+
+    };
+
+
+    //public IEnumerable<ExerciseDataViewModel> exercises { get; set; } = new List<ExerciseDataViewModel>();
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+    }
+
+    private string _searchString;
+    
+
+
+}

@@ -11,6 +11,8 @@ namespace CM.Library.DataModels.BusinessModels
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public string Id { get; set; }
 
+		public int Index { get; set; }
+		
         public virtual ExerciseDataModel Exercise { get; set; }
 
         public string Reps { get; set; }

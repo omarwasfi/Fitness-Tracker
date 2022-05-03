@@ -1,0 +1,48 @@
+@page "/Workout"
+@using CM.WebClient.Components.Views
+
+<CascadingValue Value=@workoutDataViewModel.ExerciseActions Name="ExerciseActions" >
+    <ExerciseActionView/>
+</CascadingValue>
+
+
+@code {
+    
+    public WorkoutDataViewModel workoutDataViewModel = new WorkoutDataViewModel()
+    {
+        ExerciseActions = new  List<ExerciseActionDataViewModel>()
+        {
+            new ExerciseActionDataViewModel()
+            {
+                Exercise = new ExerciseDataViewModel(){Name = "sdfbcvv"},
+                Id = "789",
+                Note = "hjmnn",
+                Index = 4
+            },
+            new ExerciseActionDataViewModel()
+            {
+                Exercise = new ExerciseDataViewModel(){Name = "ioca"},
+                Id = "123",
+                Note = "asdfasdfasdf",
+                Index = 3
+            },
+            new ExerciseActionDataViewModel()
+            {
+                Exercise = new ExerciseDataViewModel(){Name = "vbc"},
+                Id = "54",
+                Note = "asdfweasdfasdf",
+                Index = 2
+            },
+            new ExerciseActionDataViewModel()
+            {
+                Exercise = new ExerciseDataViewModel(){Name = "ewrtwer"},
+                Id = "2131",
+                Note = "bdfg",
+                Index = 1
+            }
+        }
+    };
+
+ 
+    
+}

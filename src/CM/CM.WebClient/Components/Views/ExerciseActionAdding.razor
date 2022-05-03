@@ -1,0 +1,66 @@
+<MudContainer Style="margin-top: 10px;">
+    <MudGrid >
+        <MudItem xs="6">
+            <MudText Typo="Typo.h6">Add new exercise action</MudText>
+    
+        </MudItem>
+        <MudItem xs="6"  Style="text-align: right;" >
+            <MudButton OnClick="add" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Done" Color="Color.Primary">Add</MudButton>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudAutocomplete T="ExerciseDataViewModel" Label="Select Exercise" @bind-Value="newExerciseActionDataViewModel.Exercise"
+                             SearchFunc="@Search" ToStringFunc="@(e => e == null ? null : $"{e.Name} ({e.Description})")"/> </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudTextField @bind-Value="newExerciseActionDataViewModel.Sets" Label="Sets" Variant="Variant.Text"></MudTextField>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudTextField @bind-Value="newExerciseActionDataViewModel.Reps" Label="Reps" Variant="Variant.Text"></MudTextField>
+        </MudItem>
+    </MudGrid>
+    <MudGrid>
+        <MudItem xs="12" sm="6" md="4">
+            <MudTextField Lines="3" @bind-Value="newExerciseActionDataViewModel.Note" Label="Note" Variant="Variant.Text"></MudTextField>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudTextField  @bind-Value="newExerciseActionDataViewModel.Time" Label="Time" Variant="Variant.Text"></MudTextField>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudTextField  @bind-Value="newExerciseActionDataViewModel.RestTime" Label="RestTime" Variant="Variant.Text"></MudTextField>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code {
+    [CascadingParameter(Name = "ExerciseActions")]
+    private List<ExerciseActionDataViewModel> ExerciseActions { get; set; }
+
+    private ExerciseActionDataViewModel newExerciseActionDataViewModel = new ExerciseActionDataViewModel();
+    
+    private ExerciseDataViewModel SelectedExercise;
+    
+    private List<ExerciseDataViewModel> Exercises { get; set; } = 
+        new List<ExerciseDataViewModel>()
+        {
+            new ExerciseDataViewModel(){Id = "54654" , Description = "dfghdf sdf " , Name = "456sdf"},
+            new ExerciseDataViewModel(){Id = "43652" , Description = "dfghdfghnm sdf " , Name = "vnb"},
+            new ExerciseDataViewModel(){Id = "563454654" , Description = "qweasdfjka sdf " , Name = "op;"},
+        };
+    
+    private async Task<IEnumerable<ExerciseDataViewModel>> Search(string value)
+    {
+        if (string.IsNullOrEmpty(value))
+        {
+            return Exercises;
+        }
+
+        return Exercises.Where(x => x.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
+    private async Task add()
+    {
+        newExerciseActionDataViewModel.Index = ExerciseActions.Count + 1;
+        ExerciseActions.Add(newExerciseActionDataViewModel);
+        newExerciseActionDataViewModel = new ExerciseActionDataViewModel();
+    }
+    
+}

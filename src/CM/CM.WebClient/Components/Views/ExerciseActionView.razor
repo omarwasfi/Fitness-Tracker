@@ -1,0 +1,49 @@
+<MudPaper Elevation="25">
+    <MudToolBar>
+        <MudIconButton Icon="@Icons.Material.Outlined.Add" @onclick="ChangeCurrentModeToAdd" />
+        <MudIconButton Icon="@Icons.Material.Outlined.Settings" Color="Color.Inherit" @onclick="ChangeCurrentModeToSort" />
+        <MudIconButton Icon="@Icons.Material.Outlined.Check" Color="Color.Inherit" @onclick="ChangeCurrentModeToView" />
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Outlined.Save" />
+    </MudToolBar>
+</MudPaper>
+
+@if (CurrentMode == "View")
+{
+    <ExerciseActionTableView/>
+}
+@if (CurrentMode == "Sort")
+{
+    <ExerciseActionSortingTable/>
+}
+@if (CurrentMode == "Add")
+{
+    <ExerciseActionAdding/>
+}
+
+
+@code {
+    
+    private string CurrentMode { get; set; } = "View";
+
+    private async Task ChangeCurrentModeToAdd()
+    {
+        CurrentMode = "Add";
+        
+    }
+    
+    
+    private async Task ChangeCurrentModeToSort()
+    {
+        CurrentMode = "Sort";
+    }
+    
+    private async Task ChangeCurrentModeToView()
+    {
+        CurrentMode = "View";
+    }
+    
+
+
+    
+}

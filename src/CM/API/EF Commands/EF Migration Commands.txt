@@ -11,3 +11,4 @@ dotnet ef database update --context EventsDBContext
 dotnet ef migrations add InitialCreate  --context CurrentStateDBContext --output-dir Migrations/CurrentStateDatabase
 
 dotnet ef database update --context CurrentStateDBContext
+    
