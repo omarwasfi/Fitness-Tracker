@@ -1,9 +1,9 @@
-namespace CM.SharedWithClient.RequestViewModels;
+﻿namespace CM.SharedWithClient.RequestViewModels;
 
 public class AddExerciseActionRequestDataModel
 {
-    public int? Index { get; set; }
-		
+    public int Index { get; set; } = 0;
+    
     public string? ExerciseId { get; set; }
 
     /// <summary>

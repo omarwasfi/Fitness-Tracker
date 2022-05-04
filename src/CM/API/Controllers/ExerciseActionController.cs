@@ -1,4 +1,8 @@
+﻿
+
 using AutoMapper;
+using CM.Library.DataModels.BusinessModels;
+using CM.Library.Events.ExerciseAction;
 using CM.SharedWithClient;
 using CM.SharedWithClient.RequestViewModels;
 using MediatR;
@@ -11,7 +15,7 @@ namespace CM.API.Controllers;
 [ApiController]
 [Route("[controller]")]
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-public class ExerciseActionController
+public class ExerciseActionController : ControllerBase
 {
     
     private IMediator _mediator { get; set; }
@@ -27,48 +31,134 @@ public class ExerciseActionController
     [Route("AddExerciseAction")]
     public async Task<ActionResult<ExerciseActionDataViewModel>> AddExerciseAction(AddExerciseActionRequestDataModel addExerciseActionRequest)
     {
+        ExerciseActionDataModel exerciseActionDataModel = await _mediator.Send(
+                new AddExerciseActionCommand(
+            index: addExerciseActionRequest.Index,
+            exerciseId: addExerciseActionRequest.ExerciseId,
+            addExerciseActionRequest.AddingTo,
+            addExerciseActionRequest.WorkoutId,
+            addExerciseActionRequest.ExercisePlanId,
+            addExerciseActionRequest.Reps,
+            addExerciseActionRequest.Sets,
+            addExerciseActionRequest.Time,
+            addExerciseActionRequest.RestTime,
+            addExerciseActionRequest.Note,
+            this.User
+        )
+    );
 
-        return new ExerciseActionDataViewModel();
+        // TODO call the mapper
+    return new ExerciseActionDataViewModel();
     }
-    
+
     [HttpPost]
     [Route("AddListOfExercisesAction")]
-    public async Task<ActionResult<List<ExerciseActionDataViewModel>>> AddListOfExercisesAction(List<AddExerciseActionRequestDataModel> addExerciseActionRequest)
+    public async Task<ActionResult<List<ExerciseActionDataViewModel>>> AddListOfExercisesAction(
+        List<AddExerciseActionRequestDataModel> addExerciseActionRequests)
     {
+        List<ExerciseActionDataModel> newExerciseActions = new List<ExerciseActionDataModel>();
+
+        foreach (AddExerciseActionRequestDataModel addExerciseActionRequest in addExerciseActionRequests)
+        {
+            ExerciseActionDataModel exerciseActionDataModel = await _mediator.Send(
+                new AddExerciseActionCommand(
+                    index: addExerciseActionRequest.Index,
+                    exerciseId: addExerciseActionRequest.ExerciseId,
+                    addExerciseActionRequest.AddingTo,
+                    addExerciseActionRequest.WorkoutId,
+                    addExerciseActionRequest.ExercisePlanId,
+                    addExerciseActionRequest.Reps,
+                    addExerciseActionRequest.Sets,
+                    addExerciseActionRequest.Time,
+                    addExerciseActionRequest.RestTime,
+                    addExerciseActionRequest.Note,
+                    this.User
+                )
+            );
+
+            newExerciseActions.Add(exerciseActionDataModel);
+        }
+
+        // TODO call the mapper
 
         return new List<ExerciseActionDataViewModel>();
     }
-    
+
     [HttpPut]
     [Route("EditExerciseAction")]
-    public async Task<ActionResult<ExerciseDataViewModel>> EditExerciseAction(EditExerciseActionRequestDataModel editExerciseActionRequest)
+    public async Task<ActionResult<ExerciseActionDataModel>> EditExerciseAction(EditExerciseActionRequestDataModel editExerciseActionRequest)
     {
-
-        return new ExerciseDataViewModel();
+        ExerciseActionDataModel exerciseActionDataModel = await _mediator.Send(new EditExerciseActionCommand(
+            exerciseActionId: editExerciseActionRequest.ExerciseActionId,
+            index: editExerciseActionRequest.Index,
+            exerciseId: editExerciseActionRequest.ExerciseId,
+            reps: editExerciseActionRequest.Reps,
+            sets: editExerciseActionRequest.Sets,
+            time: editExerciseActionRequest.Time,
+            restTime:editExerciseActionRequest.RestTime,
+            note: editExerciseActionRequest.Note,
+            this.User
+            
+            ));
+        return new ExerciseActionDataModel();
     }
     
         
     [HttpPut]
     [Route("EditListOfExerciseAction")]
-    public async Task<ActionResult<List<ExerciseDataViewModel>>> EditListOfExerciseAction(List<EditExerciseActionRequestDataModel> editExerciseActionRequest)
+    public async Task<ActionResult<List<ExerciseActionDataModel>>> EditListOfExerciseAction(List<EditExerciseActionRequestDataModel> editExerciseActionRequests)
     {
+        List<ExerciseActionDataModel> editedExerciseActions = new List<ExerciseActionDataModel>();
 
-        return new List<ExerciseDataViewModel>();
+        foreach (EditExerciseActionRequestDataModel editExerciseActionRequest in editExerciseActionRequests)
+        {
+            ExerciseActionDataModel exerciseActionDataModel = await _mediator.Send(new EditExerciseActionCommand(
+                exerciseActionId: editExerciseActionRequest.ExerciseActionId,
+                index: editExerciseActionRequest.Index,
+                exerciseId: editExerciseActionRequest.ExerciseId,
+                reps: editExerciseActionRequest.Reps,
+                sets: editExerciseActionRequest.Sets,
+                time: editExerciseActionRequest.Time,
+                restTime:editExerciseActionRequest.RestTime,
+                note: editExerciseActionRequest.Note,
+                this.User
+            
+            ));
+            
+            editedExerciseActions.Add(exerciseActionDataModel);
+        }
+            
+        return new List<ExerciseActionDataModel>();
     }
     
     [HttpDelete]
     [Route("DeleteExerciseAction")]
-    public async Task<ActionResult<ExerciseDataViewModel>> DeleteExerciseAction(DeleteExerciseActionRequestDataModel deleteExerciseActionRequest)
+    public async Task<ActionResult> DeleteExerciseAction(DeleteExerciseActionRequestDataModel deleteExerciseActionRequest)
     {
-
-        return new ExerciseDataViewModel();
+        await _mediator.Send(new DeleteExerciseActionCommand(
+            exerciseActionId: deleteExerciseActionRequest.ExerciseActionId,
+            deletingFrom: deleteExerciseActionRequest.DeletingFrom,
+            workoutId: deleteExerciseActionRequest.WorkoutId,
+            exercisePlanId: deleteExerciseActionRequest.ExercisePlanId,
+            this.User
+        ));
+        return new OkResult();
     }
     
     [HttpDelete]
     [Route("DeleteListOfExerciseAction")]
-    public async Task<ActionResult<List<ExerciseDataViewModel>>> DeleteExerciseAction(List<DeleteExerciseActionRequestDataModel> deleteExerciseActionRequest)
+    public async Task<ActionResult<List<ExerciseDataViewModel>>> DeleteExerciseAction(List<DeleteExerciseActionRequestDataModel> deleteExerciseActionRequests)
     {
-
+        foreach (var deleteExerciseActionRequest in deleteExerciseActionRequests)
+        {
+            await _mediator.Send(new DeleteExerciseActionCommand(
+                exerciseActionId: deleteExerciseActionRequest.ExerciseActionId,
+                deletingFrom: deleteExerciseActionRequest.DeletingFrom,
+                workoutId: deleteExerciseActionRequest.WorkoutId,
+                exercisePlanId: deleteExerciseActionRequest.ExercisePlanId,
+                this.User
+            ));
+        }
         return new List<ExerciseDataViewModel>();
     }
     

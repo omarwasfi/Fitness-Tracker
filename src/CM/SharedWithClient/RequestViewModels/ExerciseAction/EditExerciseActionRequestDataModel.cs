@@ -4,7 +4,7 @@ public class EditExerciseActionRequestDataModel
 {
     public string? ExerciseActionId { get; set; }
 
-    public int? Index { get; set; }
+    public int Index { get; set; } = 0;
 		
     public string? ExerciseId { get; set; }
 
