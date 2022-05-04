@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CM.Library.DataModels.BusinessModels;
 
 namespace CM.Library.DBContexts
 {
@@ -20,6 +21,15 @@ namespace CM.Library.DBContexts
         public DbSet<MessageDataModel> Messages { get; set; }
         public DbSet<MessageContentDataModel> MessageContents { get; set; }
 
+        public DbSet<ExerciseActionDataModel> ExerciseActions { get; set; }
+
+        public DbSet<ExerciseDataModel> Exercises { get; set; }
+
+        public DbSet<ExercisePlanDataModel> ExercisePlans { get; set; }
+
+        public DbSet<WorkoutDataModel> Workouts { get; set; }
+
+        public DbSet<SessionDataModel> Sessions { get; set; }
         public CurrentStateDBContext(DbContextOptions<CurrentStateDBContext> options) : base(options)
         {
 

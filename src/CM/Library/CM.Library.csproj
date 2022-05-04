@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="DataProcesse\" />
+    <Folder Include="Events\Exercise" />
     <Folder Include="Events\Token\" />
     <Folder Include="Queries\Picture\" />
     <Folder Include="Events\Picture\" />

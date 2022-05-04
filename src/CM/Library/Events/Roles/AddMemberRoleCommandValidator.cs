@@ -24,7 +24,7 @@ namespace CM.Library.Events.Roles
 			RuleFor(x => x.PersonId).NotEmpty().NotNull().WithMessage("The Person Id is Empty !");
 
 			RuleFor(x => x).MustAsync(async (addCouchRoleCommand, cancellation) => {
-				return await IsTheAuthorizedUserIsAdminstratorOrHR(addCouchRoleCommand.ClaimsPrincipal);
+				return await IsTheAuthorizedUserIsAdminstratorOrHROrCouch(addCouchRoleCommand.ClaimsPrincipal);
 			}).WithMessage("You must be an Administrator or HR OR Couch");
 
 			RuleFor(x => x).MustAsync(async (addCouchRoleCommand, cancellation) => {
@@ -32,7 +32,7 @@ namespace CM.Library.Events.Roles
 			}).WithMessage("The person already Has member role");
 		}
 
-		private async Task<bool> IsTheAuthorizedUserIsAdminstratorOrHR( ClaimsPrincipal claimsPrincipal)
+		private async Task<bool> IsTheAuthorizedUserIsAdminstratorOrHROrCouch( ClaimsPrincipal claimsPrincipal)
 		{
 			PersonDataModel authorizedPerson = await _mediator.Send(new GetTheAuthorizedPersonQuery(claimsPrincipal));
 
