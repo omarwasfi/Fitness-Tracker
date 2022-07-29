@@ -47,8 +47,8 @@ public class ExerciseActionController : ControllerBase
         )
     );
 
-        // TODO call the mapper
-    return new ExerciseActionDataViewModel();
+        ExerciseActionDataViewModel exerciseActionDataViewModel = _mapper.Map<ExerciseActionDataViewModel>(exerciseActionDataModel);
+    return exerciseActionDataViewModel;
     }
 
     [HttpPost]
@@ -79,7 +79,8 @@ public class ExerciseActionController : ControllerBase
             newExerciseActions.Add(exerciseActionDataModel);
         }
 
-        // TODO call the mapper
+        List<ExerciseActionDataViewModel> exerciseActionDataViewModels = _mapper.Map<List<ExerciseActionDataViewModel>>(newExerciseActions);
+
 
         return new List<ExerciseActionDataViewModel>();
     }

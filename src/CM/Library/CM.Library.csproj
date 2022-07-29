@@ -5,16 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="10.4.0" />
+    <PackageReference Include="FluentValidation" Version="11.1.0" />
     <PackageReference Include="MediatR" Version="10.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.7" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Serilog" Version="2.10.0" />
-    <PackageReference Include="MySql.Data.EntityFramework" Version="8.0.28" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
-    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.17.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.17.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.4" />
+    <PackageReference Include="Serilog" Version="2.11.0" />
+    <PackageReference Include="MySql.Data.EntityFramework" Version="8.0.30" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.7" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.22.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.22.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.7" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +34,7 @@
     <Folder Include="DataModels\BusinessModels\" />
     <Folder Include="Queries\Roles\" />
     <Folder Include="Events\Roles\" />
+    <Folder Include="Events\Exercise\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -57,5 +58,6 @@
     <None Remove="DataModels\BusinessModels\" />
     <None Remove="Queries\Roles\" />
     <None Remove="Events\Roles\" />
+    <None Remove="Events\Exercise\" />
   </ItemGroup>
 </Project>

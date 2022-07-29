@@ -1,6 +1,7 @@
 ﻿using System;
 using AutoMapper;
 using CM.Library.DataModels;
+using CM.Library.DataModels.BusinessModels;
 using CM.Library.DataModels.Chat;
 using CM.Library.Queries.Picture;
 using CM.SharedWithClient;
@@ -31,7 +32,13 @@ namespace CM.API.MappingConfiguration
 
 			CreateMap<MessageContentDataModel, MessageContentDataViewModel>();
 
+			CreateMap<ExerciseDataModel, ExerciseDataViewModel>();
 
+			CreateMap<ExerciseActionDataModel,ExerciseActionDataViewModel>();
+
+			CreateMap<ExercisePlanDataModel, ExercisePlanDataViewModel>();
+
+			CreateMap<WorkoutDataModel, WorkoutDataViewModel>();
 		}
 
 		
